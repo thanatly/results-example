@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const { stringify } = require('querystring');
 
 class Handlers {
     constructor (typeform_api_url, default_form_id) {
@@ -41,27 +42,31 @@ class Handlers {
         })
         .then(res => res.json())
         .then(d => {
-            let name = [];
-            let email = [];
+            const results = []
             d.items.forEach(item => {
                 if (item.answers) {
-                    console.log(item.answers)  
+                    //console.log(item.answers)
                 }
             })
 
-            res.end(`
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-            </head>
+            const ans = d.items.map (item => item.answers)
+            //console.log(ans)
+            //if ans.type = 'text' --> result.name
+            //if ans.type = 'email' --> result.email
+            for (const item of ans){
+                const data = {
+                    name : item[0].text,
+                    email : item[1].email
+                }
+                results.push(data)
+            }
+            console.log(results)
+            let data = JSON.stringify(results);
+            return res.end(`
             <body>
-                <canvas id="canvas" width="800" height="400"></canvas>
-                <script>
-                </script>
+                <p>${data}</p>
             </body>
-            </html>
-            `)
+                `)
         })
         .catch(e => {
             console.log(e);
