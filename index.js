@@ -8,6 +8,7 @@ function die(msg, code) {
     process.exit(code);
 }
 
+require('dotenv').config()
 const url = require('url');
 
 // input

@@ -41,14 +41,11 @@ class Handlers {
         })
         .then(res => res.json())
         .then(d => {
-            let xdata = [];
-            let ydata = [];
+            let name = [];
+            let email = [];
             d.items.forEach(item => {
                 if (item.answers) {
-                    if (item.answers[0].type == "number") {
-                        xdata.push(xdata[xdata.length-1]+1 || 1);
-                        ydata.push(item.answers[0].number);
-                    }
+                    console.log(item.answers)  
                 }
             })
 
@@ -61,27 +58,6 @@ class Handlers {
             <body>
                 <canvas id="canvas" width="800" height="400"></canvas>
                 <script>
-                    var data = {
-                        labels: ${JSON.stringify(xdata)},
-                        datasets: [
-                            {
-                                label: "Answer",
-                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1,
-                                data: ${JSON.stringify(ydata)},
-                                stack: 1,
-                            },                        
-                        ]
-                    };
-
-                    var options = {scales: {yAxes: [{stacked: true}]}};
-
-                    var myBarChart = new Chart(document.querySelector('#canvas'), {
-                        type: 'bar',
-                        data: data,
-                        options: options
-                    });
                 </script>
             </body>
             </html>
